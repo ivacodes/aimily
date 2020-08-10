@@ -48,15 +48,44 @@ router.post("/goals", async (req, res, next) => {
     await db(
       `insert into goals (goal, deadline, description) values ("${goal}", "${deadline}", "${description}");`
     );
-    res.status(200).send({ msg: "ok" });
+    try {
+      const lastUserId = await db(
+        `SELECT ID FROM USERS ORDER BY ID DESC LIMIT 1;`
+      );
+      //console.log("test1");
+      //console.log(lastUserId.data[0].ID);
+      //console.log("test2");
+      //console.log(lastUserId.ID);
+      try {
+        lastGoalId = await db(`SELECT ID FROM GOALS ORDER BY ID DESC LIMIT 1;`);
+        //res.status(200).send({ msg: "ok" });
+        try {
+          await db(
+            `insert into users_and_goals (users_id, goal_id ) values ("${lastUserId.data[0].ID}", "${lastGoalId.data[0].ID}");`
+          );
+          res.status(200).send({ msg: "ok" });
+        } catch (err) {
+          res.status(500).send(err);
+        }
+      } catch (err) {
+        res.status(500).send(err);
+      }
+
+      //res.status(200).send({ msg: "ok" });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+    //res.status(200).send({ msg: "ok" });
   } catch (err) {
     res.status(500).send(err);
   }
+
+  /*
+   */
 });
 
 //++ GET users and goals temporary function to see what's inside users and goals
-/*
-const getUsersAndGoals = async (req, res, next) => {
+/*const getUsersAndGoals = async (req, res, next) => {
   try {
     const results = await db(`SELECT * FROM users_and_goals ORDER BY id ASC;`);
     res.send(results.data);

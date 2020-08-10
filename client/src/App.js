@@ -1,26 +1,30 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: " ",
-      email: " ",
-      goal: " ",
-      deadline: " ",
-      description: " ",
-      oneUserInfo: [],
+      currentStep: 1, //default step is 1
+      name: "",
+      email: "",
+      goal: "",
+      deadline: "",
+      description: "",
+      oneUserInfo: "",
     };
+    this.updateValue = this.updateValue.bind(this);
   }
   // it didn't work so I went to back to my redundant update each state functions
   updateValue = (e) => {
+    //const { name, value } = event.target;
     e.preventDefault();
+
     this.setState({
       [e.target.name]: e.target.value,
     });
   };
-
+  /*
   updateName = (e) => {
     e.preventDefault();
     this.setState({
@@ -55,6 +59,7 @@ export default class App extends React.Component {
       description: e.target.value,
     });
   };
+*/
   addNameAndEmail() {
     fetch("/users", {
       method: "POST",
@@ -84,20 +89,40 @@ export default class App extends React.Component {
         deadline: this.state.deadline,
         description: this.state.description,
       }),
-    }).then((res) => res.json());
-    //.then((goal) => {
-    //console.log(this.displayUserAndGoal());
-    //});
-    //.then((goal) => {
-    //  console.log(goal);
-    //});
+    })
+      .then((res) => res.json())
+      .then((goal) => {
+        console.log(this.displayUserAndGoal());
+        fetch("users_and_goals", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            goal: this.state.goal,
+            deadline: this.state.deadline,
+            description: this.state.description,
+          }),
+        })
+          .then((res) => res.json())
+          .then((goal) => {
+            console.log(this.displayUserAndGoal());
+          })
+          .then((goal) => {
+            console.log(goal);
+          });
+      });
   }
 
   displayUserAndGoal() {
-    fetch("users/users_and_goals", {
-      method: "GET",
-    }).then((res) => res.json());
+    //event.preventDefault();
+    const { name, goal, deadline, description, oneUserInfo } = this.state;
+
+    this.setState({
+      oneUserInfo: `Your goal is set! ${name}, you want to ${goal}, ${description} by ${deadline}`,
+    });
   }
+
   componentDidMount = async () => {
     try {
       const res = await fetch("/");
@@ -112,7 +137,15 @@ export default class App extends React.Component {
   };
 
   render() {
-    const { name, email, goal, deadline, description } = this.state;
+    const {
+      name,
+      email,
+      goal,
+      deadline,
+      description,
+      oneUserInfo,
+    } = this.state;
+
     return (
       <div className="container p-5 text-center bg-dark">
         <div className="container rounded bg-light p-5">
@@ -124,8 +157,9 @@ export default class App extends React.Component {
           <div className="form-inline mb-4">
             <input
               className="form-control flex-grow-1 mr-2"
+              name="name"
               value={name}
-              onChange={this.updateName}
+              onChange={this.updateValue}
             />
           </div>
           <h2>What's your email address?</h2>
@@ -133,7 +167,8 @@ export default class App extends React.Component {
             <input
               className="form-control flex-grow-1 mr-2"
               value={email}
-              onChange={this.updateEmail}
+              name="email"
+              onChange={this.updateValue}
             />
           </div>
 
@@ -150,7 +185,8 @@ export default class App extends React.Component {
             <input
               className="form-control flex-grow-1 mr-2"
               value={goal}
-              onChange={this.updateGoal}
+              name="goal"
+              onChange={this.updateValue}
             />
           </div>
           <h2>By when do you want to achieve it?</h2>
@@ -158,7 +194,8 @@ export default class App extends React.Component {
             <input
               className="form-control flex-grow-1 mr-2"
               value={deadline}
-              onChange={this.updateDeadline}
+              name="deadline"
+              onChange={this.updateValue}
             />
           </div>
           <h2>Add more details</h2>
@@ -166,7 +203,8 @@ export default class App extends React.Component {
             <input
               className="form-control flex-grow-1 mr-2"
               value={description}
-              onChange={this.updateDescription}
+              name="description"
+              onChange={this.updateValue}
             />
           </div>
           <button
@@ -176,8 +214,11 @@ export default class App extends React.Component {
             Let's get started!
           </button>
         </div>
-        <div className="container rounded bg-light mt-5 p-5">
-          <h2>result</h2>
+        <div
+          className="container rounded bg-light mt-5 p-5"
+          //onChange={this.displayUserAndGoal()}
+        >
+          <p>{oneUserInfo}</p>
         </div>
       </div>
     );
