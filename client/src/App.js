@@ -87,6 +87,7 @@ export default class App extends React.Component {
   }
 
   displayUserAndGoal() {
+    // the function that displays users and details of his goal nack to the user
     const { name, goal, deadline, description, oneUserInfo } = this.state;
 
     this.setState({
@@ -95,12 +96,13 @@ export default class App extends React.Component {
   }
 
   changeView() {
+    // this function works and it's updates the view but I couldn't connect it with actual divs
     const { userView, goalView } = this.state;
     this.setState({
       goalView: true,
       userView: false,
     });
-    /*
+    /* my tries to make 3 screens and show them one by one, please just ignore the commented out part 
     if (showHide) {
       "#userview".addClass(hidden);
     } else {

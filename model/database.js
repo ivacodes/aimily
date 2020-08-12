@@ -19,7 +19,7 @@ con.connect(function (err) {
   console.log("Connected!");
 
   let sql =
-    // create 3 tables and write details for each ; connection query let sql, sql=, sql =
+    // sorry, please use aimily_tables.sql because I wasn't sure what exactly you will need
     "DROP TABLE if exists items; CREATE TABLE items(id INT NOT NULL AUTO_INCREMENT, text VARCHAR(40) not null, complete BOOLEAN, PRIMARY KEY (id));";
   con.query(sql, function (err, result) {
     if (err) throw err;

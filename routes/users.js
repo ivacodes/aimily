@@ -6,7 +6,7 @@ const { request } = require("../app");
 
 router.use(bodyParser.json());
 
-// ++GET users temporary function to see what's being added to user database
+// ++GET users temporary function to see what's being added to user database, not used for the app right now
 const getUsers = async (req, res, next) => {
   try {
     const results = await db(`SELECT *FROM users ORDER BY id ASC;`);
@@ -17,7 +17,7 @@ const getUsers = async (req, res, next) => {
 };
 router.get("/", getUsers);
 
-//++ GET goals temporary function to see what's being added to goals database
+//++ GET goals temporary function to see what's being added to goals database, also not being used now
 const getGoals = async (req, res, next) => {
   try {
     const results = await db(`SELECT *FROM goals ORDER BY id ASC;`);
@@ -28,19 +28,18 @@ const getGoals = async (req, res, next) => {
 };
 router.get("/goals", getGoals);
 
-// ++POST create user name
+// ++POST create user name and email. add it to "users" table
 router.post("/", async (req, res, next) => {
   const { name, email } = req.body;
   try {
     await db(`insert into users (name, email) values ("${name}", "${email}");`);
-    // getUsers(req, res);
     res.status(200).send({ msg: "ok" });
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-//++POST create goal with deadline
+//++POST create goal with deadline and description, add it to "goals" and "users_and_goals" table
 
 router.post("/goals", async (req, res, next) => {
   const { goal, deadline, description } = req.body;
@@ -52,13 +51,8 @@ router.post("/goals", async (req, res, next) => {
       const lastUserId = await db(
         `SELECT ID FROM USERS ORDER BY ID DESC LIMIT 1;`
       );
-      //console.log("test1");
-      //console.log(lastUserId.data[0].ID);
-      //console.log("test2");
-      //console.log(lastUserId.ID);
       try {
         lastGoalId = await db(`SELECT ID FROM GOALS ORDER BY ID DESC LIMIT 1;`);
-        //res.status(200).send({ msg: "ok" });
         try {
           await db(
             `insert into users_and_goals (users_id, goal_id ) values ("${lastUserId.data[0].ID}", "${lastGoalId.data[0].ID}");`
@@ -70,21 +64,15 @@ router.post("/goals", async (req, res, next) => {
       } catch (err) {
         res.status(500).send(err);
       }
-
-      //res.status(200).send({ msg: "ok" });
     } catch (err) {
       res.status(500).send(err);
     }
-    //res.status(200).send({ msg: "ok" });
   } catch (err) {
     res.status(500).send(err);
   }
-
-  /*
-   */
 });
 
-//++ GET users and goals temporary function to see what's inside users and goals
+//++ GET users and goals temporary function to see what's inside users and goals, tested but haven't used
 /*const getUsersAndGoals = async (req, res, next) => {
   try {
     const results = await db(`SELECT * FROM users_and_goals ORDER BY id ASC;`);
@@ -104,8 +92,6 @@ router.post("/users_and_goals", async (req, res, next) => {
     await db(
       `insert into users_and_goals (users_id, goal_id ) values ("${users_id}", "${goal_id}");`
     );
-    //res.status(200).send({ msg: "ok" });
-    //getUsersAndGoals(req, res);
     req.params.users_id = users_id;
     getUserWithGoalById(req, res);
   } catch (err) {
@@ -113,7 +99,7 @@ router.post("/users_and_goals", async (req, res, next) => {
   }
 });
 
-//++GET all info on specific user
+//++GET all info(name, goal, deadline, description) on a specific user. Sorry, I am not sure if it is used right now in the app but it was tested and it works
 
 const getUserWithGoalById = async (req, res, next) => {
   const { users_id } = req.params; //works with req.body as well need to check which is better for my case
