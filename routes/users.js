@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 const bodyParser = require("body-parser");
 const db = require("../model/helper");
-const { request } = require("../app");
 
 router.use(bodyParser.json());
 
