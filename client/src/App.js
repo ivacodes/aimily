@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 //import { NotExtended } from "http-errors"; // don't know where this came from, I think it wasn't here in the beginning
+import UserLogin from "./components/UserLogin";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -150,7 +151,8 @@ export default class App extends React.Component {
 
     return (
       <div className="container p-5 text-center">
-        <div className="container rounded p-5" id="welcome">
+        <UserLogin />
+        {/* <div className="container rounded p-5" id="welcome">
           <h1>Welcome to Aimily!</h1>
           <h3> The app that will make your dreams come true!</h3>
         </div>
@@ -231,7 +233,7 @@ export default class App extends React.Component {
         </div>
         <div className="container rounded mt-5 p-5" id="resultcontainer">
           <p>{oneUserInfo}</p>
-        </div>
+        </div> */}
       </div>
     );
   }
