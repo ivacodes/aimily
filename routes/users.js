@@ -27,11 +27,13 @@ const getGoals = async (req, res, next) => {
 };
 router.get("/goals", getGoals);
 
-// ++POST create user name and email. add it to "users" table
+// ++ POST create new user and add it to the users table. Passwords are encrypted
 router.post("/", async (req, res, next) => {
-  const { name, email } = req.body;
+  const { name, email, password } = req.body;
   try {
-    await db(`insert into users (name, email) values ("${name}", "${email}");`);
+    await db(
+      `insert into users (name, email, password) values ("${name}", "${email}", "${password}");`
+    );
     res.status(200).send({ msg: "ok" });
   } catch (err) {
     res.status(500).send(err);

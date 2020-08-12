@@ -1,29 +1,20 @@
 import React, { Component } from "react";
+const bcrypt = require("bcryptjs");
+const saltRounds = 10;
 
 export default class Create extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: {},
+      input: {
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
       errors: {},
     };
   }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (this.validate()) {
-      console.log(this.state);
-      let input = {};
-      input["name"] = "";
-      input["email"] = "";
-      input["password"] = "";
-      input["confirm_password"] = "";
-      this.setState({ input: input });
-
-      alert("Form submitted");
-    }
-  };
 
   handleInputChange = (event) => {
     let input = this.state.input;
@@ -65,26 +56,65 @@ export default class Create extends Component {
       errors["password"] = "Please enter your password.";
     }
 
-    if (!input["confirm_password"]) {
+    if (!input["confirmPassword"]) {
       isValid = false;
-      errors["confirm_password"] = "Please enter your confirm password.";
+      errors["confirmPassword"] = "Please enter your confirm password.";
     }
 
     if (
       typeof input["password"] !== "undefined" &&
-      typeof input["confirm_password"] !== "undefined"
+      typeof input["confirmPassword"] !== "undefined"
     ) {
-      if (input["password"] != input["confirm_password"]) {
+      if (input["password"] !== input["confirmPassword"]) {
         isValid = false;
         errors["password"] = "Passwords don't match.";
       }
     }
-
     this.setState({
       errors: errors,
     });
-
     return isValid;
+  };
+
+  //form is submitted, goes through validation first
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (this.validate()) {
+      // console.log(this.state);
+      let input = {};
+      input["name"] = "";
+      input["email"] = "";
+      input["password"] = "";
+      input["confirmPassword"] = "";
+      this.setState({ input: input });
+
+      alert("Form submitted");
+      this.storeUser(this.state.input);
+    }
+  };
+
+  storeUser = async (input) => {
+    const { name, email, password } = input;
+    // console.log(input.password);
+    bcrypt.hash(password, saltRounds, async (err, hash) => {
+      let newUser = {
+        name: name,
+        email: email,
+        password: hash,
+      };
+      try {
+        await fetch("/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      console.log(err);
+    });
   };
 
   render() {
@@ -93,14 +123,14 @@ export default class Create extends Component {
       <div>
         Create user input
         <form onSubmit={this.handleSubmit}>
-          <div class="form-group">
-            <label for="name">Name:</label>
+          <div className="form-group">
+            <label htmlFor="name">Name:</label>
             <input
               type="text"
               name="name"
               value={input.name}
               onChange={this.handleInputChange}
-              class="form-control"
+              className="form-control"
               placeholder="Enter name"
               id="name"
             />
@@ -108,14 +138,14 @@ export default class Create extends Component {
             <div className="text-danger">{errors.name}</div>
           </div>
 
-          <div class="form-group">
-            <label for="email">Email Address:</label>
+          <div className="form-group">
+            <label htmlFor="email">Email Address:</label>
             <input
               type="text"
               name="email"
               value={input.email}
               onChange={this.handleInputChange}
-              class="form-control"
+              className="form-control"
               placeholder="Enter email"
               id="email"
             />
@@ -123,14 +153,14 @@ export default class Create extends Component {
             <div className="text-danger">{errors.email}</div>
           </div>
 
-          <div class="form-group">
-            <label for="password">Password:</label>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
             <input
               type="password"
               name="password"
               value={input.password}
               onChange={this.handleInputChange}
-              class="form-control"
+              className="form-control"
               placeholder="Enter password"
               id="password"
             />
@@ -138,22 +168,22 @@ export default class Create extends Component {
             <div className="text-danger">{errors.password}</div>
           </div>
 
-          <div class="form-group">
-            <label for="password">Confirm Password:</label>
+          <div className="form-group">
+            <label htmlFor="password">Confirm Password:</label>
             <input
               type="password"
-              name="confirm_password"
-              value={input.confirm_password}
+              name="confirmPassword"
+              value={input.confirmPassword}
               onChange={this.handleInputChange}
-              class="form-control"
+              className="form-control"
               placeholder="Enter confirm password"
               id="confirm_password"
             />
 
-            <div className="text-danger">{errors.confirm_password}</div>
+            <div className="text-danger">{errors.confirmPassword}</div>
           </div>
 
-          <input type="submit" value="Submit" class="btn btn-success" />
+          <input type="submit" value="Submit" className="btn btn-success" />
         </form>
       </div>
     );
