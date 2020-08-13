@@ -6,15 +6,15 @@ const db = require("../model/helper");
 router.use(bodyParser.json());
 
 // ++GET users temporary function to see what's being added to user database, not used for the app right now
-const getUsers = async (req, res, next) => {
-  try {
-    const results = await db(`SELECT *FROM users ORDER BY id ASC;`);
-    res.send(results.data);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
-router.get("/", getUsers);
+// const getUsers = async (req, res, next) => {
+//   try {
+//     const results = await db(`SELECT *FROM users ORDER BY id ASC;`);
+//     res.send(results.data);
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// };
+// router.get("/", getUsers);
 
 //++ GET goals temporary function to see what's being added to goals database, also not being used now
 const getGoals = async (req, res, next) => {
@@ -37,6 +37,17 @@ router.post("/", async (req, res, next) => {
     res.status(200).send({ msg: "ok" });
   } catch (err) {
     res.status(500).send(err);
+  }
+});
+
+// get user detail by username from users table
+router.get("/:username", async (req, res, next) => {
+  const { username } = req.params;
+  try {
+    result = await db(`select * from users where name='${username}';`);
+    res.send(result.data);
+  } catch (err) {
+    res.status(404).send({ msg: "user doesn't exist" });
   }
 });
 

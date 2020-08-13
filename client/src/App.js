@@ -131,9 +131,9 @@ export default class App extends React.Component {
 
   componentDidMount = async () => {
     try {
-      const res = await fetch("/");
-      const name = await res.json();
-      const email = await res.json();
+      // const res = await fetch("/");
+      // const name = await res.json();
+      // const email = await res.json();
     } catch (error) {
       console.log({ msg: error });
     }
