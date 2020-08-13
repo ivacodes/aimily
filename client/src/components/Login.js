@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 
 export default class Login extends Component {
   constructor(props) {
@@ -24,22 +24,14 @@ export default class Login extends Component {
     console.log(user);
 
     try {
-      let result = await fetch(`/users/${user.name}`, {
-        method: "GET",
+      let result = await fetch(`/login`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(user),
       });
       let json = await result.json();
-      bcrypt.compare(user.password, json[0].password, function (err, res) {
-        if (res) {
-          console.log("password correct");
-        } else {
-          console.log("password incorrect");
-        }
-      });
-
-      console.log(json);
     } catch (err) {
       console.log(err);
     }

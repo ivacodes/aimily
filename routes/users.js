@@ -2,6 +2,9 @@ var express = require("express");
 var router = express.Router();
 const bodyParser = require("body-parser");
 const db = require("../model/helper");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const supersecret = process.env.SUPER_SECRET;
 
 router.use(bodyParser.json());
 
@@ -37,6 +40,30 @@ router.post("/", async (req, res, next) => {
     res.status(200).send({ msg: "ok" });
   } catch (err) {
     res.status(500).send(err);
+  }
+});
+
+router.post("/login", async (req, res, next) => {
+  const { name, password } = req.body;
+  try {
+    //find user in DB
+    const results = await db(`select * from users where name='${name}'`);
+    if (results.data.length) {
+      // res.send({ message: "User found" });
+      // compare inputed password with hash in db
+      bcrypt.compare(password, results.data[0].password, function (err, res) {
+        if (res) {
+          console.log("password correct");
+          console.log("User is ", results.data[0]);
+        } else {
+          console.log("wrong pass");
+        }
+      });
+    } else {
+      res.status(404).send({ message: "User not found!" });
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 
