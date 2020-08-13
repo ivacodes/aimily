@@ -48,22 +48,26 @@ router.post("/login", async (req, res, next) => {
   try {
     //find user in DB
     const results = await db(`select * from users where name='${name}'`);
+    //if user found
     if (results.data.length) {
-      // res.send({ message: "User found" });
+      console.log("user found");
       // compare inputed password with hash in db
       const passCorrect = await bcrypt.compare(
         password,
         results.data[0].password
       );
+      // if pass correct pass token to front end
       if (passCorrect) {
-        console.log("password correct");
-        console.log("User is ", results.data[0]);
+        // console.log("password correct");
+        // console.log("User is ", results.data[0]);
         let token = jwt.sign({ userId: results.data[0].id }, supersecret);
-        res.send({ message: "User OK, here is your token", token: token });
+        res.send({ message: "User OK", token });
       } else {
+        //pass not correct
         res.status(404).send({ message: "Wrong pass" });
       }
     } else {
+      //user not found
       res.status(404).send({ message: "User not found!" });
     }
   } catch (err) {

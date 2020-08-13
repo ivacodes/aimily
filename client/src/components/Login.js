@@ -21,10 +21,10 @@ export default class Login extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     let user = this.state;
-    console.log(user);
+    // console.log(user);
 
     try {
-      let result = await fetch(`/login`, {
+      let result = await fetch(`/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,6 +32,10 @@ export default class Login extends Component {
         body: JSON.stringify(user),
       });
       let json = await result.json();
+      //token received
+      console.log(json);
+      //save token in local storage
+      localStorage.setItem("token", json.token);
     } catch (err) {
       console.log(err);
     }
