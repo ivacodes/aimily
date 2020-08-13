@@ -5,6 +5,7 @@ const db = require("../model/helper");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const supersecret = process.env.SUPER_SECRET;
+const checkUserLoggedIn = require("./guards/checkUserLoggedIn");
 
 router.use(bodyParser.json());
 
@@ -20,15 +21,15 @@ router.use(bodyParser.json());
 // router.get("/", getUsers);
 
 //++ GET goals temporary function to see what's being added to goals database, also not being used now
-const getGoals = async (req, res, next) => {
-  try {
-    const results = await db(`SELECT *FROM goals ORDER BY id ASC;`);
-    res.send(results.data);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
-router.get("/goals", getGoals);
+// const getGoals = async (req, res, next) => {
+//   try {
+//     const results = await db(`SELECT *FROM goals ORDER BY id ASC;`);
+//     res.send(results.data);
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// };
+// router.get("/goals", getGoals);
 
 // ++ POST create new user and add it to the users table. Passwords are encrypted
 router.post("/", async (req, res, next) => {
@@ -43,6 +44,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+//POST login route, if login info is correct, return token
 router.post("/login", async (req, res, next) => {
   const { name, password } = req.body;
   try {
@@ -75,16 +77,27 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-// get user detail by username from users table
-router.get("/:username", async (req, res, next) => {
-  const { username } = req.params;
+router.get("/user", checkUserLoggedIn, async (req, res) => {
+  console.log("yay user");
+  console.log(req.userId);
   try {
-    result = await db(`select * from users where name='${username}';`);
+    result = await db(`select * from users where id='${req.userId}';`);
     res.send(result.data);
   } catch (err) {
-    res.status(404).send({ msg: "user doesn't exist" });
+    res.send(400).send({ message: err });
   }
 });
+
+// get user detail by username from users table
+// router.get("/:username", async (req, res, next) => {
+//   const { username } = req.params;
+//   try {
+//     result = await db(`select * from users where name='${username}';`);
+//     res.send(result.data);
+//   } catch (err) {
+//     res.status(404).send({ msg: "user doesn't exist" });
+//   }
+// });
 
 //++POST create goal with deadline and description, add it to "goals" and "users_and_goals" table
 
@@ -148,18 +161,16 @@ router.post("/users_and_goals", async (req, res, next) => {
 
 //++GET all info(name, goal, deadline, description) on a specific user. Sorry, I am not sure if it is used right now in the app but it was tested and it works
 
-const getUserWithGoalById = async (req, res, next) => {
-  const { users_id } = req.params; //works with req.body as well need to check which is better for my case
-
-  try {
-    const results = await db(
-      `SELECT users.name , goals.goal, goals.deadline, goals.description FROM users_and_goals INNER JOIN users ON users_and_goals.users_id = users.id INNER JOIN goals ON users_and_goals.goal_id=goals.id WHERE users.id="${users_id}";`
-    );
-    res.send(results.data);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
-router.get("/:users_id", getUserWithGoalById);
+// const getUserWithGoalById = async (req, res, next) => {
+//   const { userId } = req.userId; //works with req.body as well need to check which is better for my case
+//   try {
+//     const results = await db(
+//       `SELECT users.name , goals.goal, goals.deadline, goals.description FROM users_and_goals INNER JOIN users ON users_and_goals.users_id = users.id INNER JOIN goals ON users_and_goals.goal_id=goals.id WHERE users.id="${users_id}";`
+//     );
+//     res.send(results.data);
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// };
 
 module.exports = router;

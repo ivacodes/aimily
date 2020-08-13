@@ -7,6 +7,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userLoggedIn: 0,
+      userId: "",
       //currentStep: 1, //default step is 1 // was planning to split into components, but didn't have time so just ignore this
       name: "",
       email: "",
@@ -96,44 +98,32 @@ export default class App extends React.Component {
     });
   }
 
-  changeView() {
-    // this function works and it's updates the view but I couldn't connect it with actual divs
-    const { userView, goalView } = this.state;
-    this.setState({
-      goalView: true,
-      userView: false,
-    });
-    /* my tries to make 3 screens and show them one by one, please just ignore the commented out part 
-    if (showHide) {
-      "#userview".addClass(hidden);
-    } else {
-      "#goalview".removeClass(hidden);
+  isUserLoggedIn = async () => {
+    try {
+      const result = await fetch("users/user", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      });
+      let json = await result.json();
+      //user is already logged in - populating state
+      this.setState({
+        userLoggedIn: 1,
+        userId: json[0].id,
+        name: json[0].name,
+      });
+      console.log(json);
+    } catch (err) {
+      console.log(err);
     }
-*/
-    //className = { this.state.userView: "userview": "goalview" };
-  }
-  //<button onClick={() => this.changeUser(true)} className={this.state.adminView? 'button-clicked': 'button-normal'}>ADMIN</button>
-  //{...this.changeView(true)}
-  //className={this.state.userView ? "usercontainer" : "goalcontainer"}
-  /*
-  showHideDiv(div) {
-    var srcElement = document.getElementById(div);
-    if (srcElement != null) {
-      if (srcElement.style.display == "block") {
-        srcElement.style.display = "none";
-      } else {
-        srcElement.style.display = "block";
-      }
-      return false;
-    }
-  }
-*/
+  };
 
   componentDidMount = async () => {
     try {
-      // const res = await fetch("/");
-      // const name = await res.json();
-      // const email = await res.json();
+      //check if user already logged in
+      this.isUserLoggedIn();
     } catch (error) {
       console.log({ msg: error });
     }
