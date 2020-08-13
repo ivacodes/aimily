@@ -36,6 +36,7 @@ export default class Login extends Component {
       console.log(json);
       //save token in local storage
       localStorage.setItem("token", json.token);
+      this.props.isUserLoggedIn();
     } catch (err) {
       console.log(err);
     }

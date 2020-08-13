@@ -99,24 +99,34 @@ export default class App extends React.Component {
   }
 
   isUserLoggedIn = async () => {
-    try {
-      const result = await fetch("users/user", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": localStorage.getItem("token"),
-        },
-      });
-      let json = await result.json();
-      //user is already logged in - populating state
+    //check if browser already has token
+    let token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const result = await fetch("users/user", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem("token"),
+          },
+        });
+        let json = await result.json();
+        //user is already logged in - populating state
+        this.setState({
+          userLoggedIn: 1,
+          userId: json[0].id,
+          name: json[0].name,
+        });
+        console.log(json);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
       this.setState({
-        userLoggedIn: 1,
-        userId: json[0].id,
-        name: json[0].name,
+        userLoggedIn: 0,
+        userId: "",
+        name: "",
       });
-      console.log(json);
-    } catch (err) {
-      console.log(err);
     }
   };
 
@@ -137,12 +147,16 @@ export default class App extends React.Component {
       deadline,
       description,
       oneUserInfo,
+      userLoggedIn,
     } = this.state;
 
     return (
       <div className="container p-5 text-center">
-        <UserLogin />
-        {/* <div className="container rounded p-5" id="welcome">
+        {
+          userLoggedIn ? null : (
+            <UserLogin isUserLoggedIn={this.isUserLoggedIn} />
+          )
+          /* <div className="container rounded p-5" id="welcome">
           <h1>Welcome to Aimily!</h1>
           <h3> The app that will make your dreams come true!</h3>
         </div>
@@ -223,7 +237,8 @@ export default class App extends React.Component {
         </div>
         <div className="container rounded mt-5 p-5" id="resultcontainer">
           <p>{oneUserInfo}</p>
-        </div> */}
+        </div> */
+        }
       </div>
     );
   }

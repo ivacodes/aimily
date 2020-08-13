@@ -42,7 +42,7 @@ export default class UserLogin extends Component {
           {(() => {
             switch (selected) {
               case "login":
-                return <Login />;
+                return <Login isUserLoggedIn={this.props.isUserLoggedIn} />;
               case "create":
                 return <Create />;
               default:
