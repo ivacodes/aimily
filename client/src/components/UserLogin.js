@@ -23,7 +23,7 @@ export default class UserLogin extends Component {
     const { selected } = this.state;
     const { error } = this.props;
     return (
-      <div id="logincreatebuttons" className="rounded p-2 mt-n1 ">
+      <div id="logincreatebuttons" className="rounded p-5 mt-n1 ">
         <button
           className="btn btn-lg mb-4"
           name="selected"

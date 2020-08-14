@@ -97,6 +97,8 @@ export default class Create extends Component {
   storeUser = async (input) => {
     const { name, email, password } = input;
     // console.log(input.password);
+    //encrypt password
+    //this method doesn't check if username or email are already checked, that should be added
     bcrypt.hash(password, saltRounds, async (err, hash) => {
       let newUser = {
         name: name,
@@ -116,7 +118,7 @@ export default class Create extends Component {
           userCreated: 1,
         });
       } catch (err) {
-        console.log("user exists", err.msg); // this no worky
+        console.log("user exists", err.msg);
       }
       console.log("storing user", err);
     });
