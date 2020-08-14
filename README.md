@@ -8,23 +8,20 @@
 
 ![database schema](images/database_schema.jpg)
 
-##### You will need to create 3 tables, the instructions are inside aimily_tables.sql
+##### You will need to create 2 tables, the instructions are inside /model/aimily_tables_v2.sql
 
 ##### 1. "users" table it stores user's name and email and automatically adds an ID
 
 ![users](images/users.png)
 
-##### 2. "goals" table, it stores the following infomration: goal, deadline, description and the same way adds an ID automatically
+##### 2. "goals" table, it stores the following infomration: goal, deadline, description and the userId that created the goal
 
 ![goals](images/goals.png)
 
-##### 3. the last table connects the first two, "users_and_goals", data is being added to this one at the same time as it is added to the first two
-
-![users_and_goals](images/users_and_goals.png)
-
 #### Routes
 
-![routes plan](/images/routes_plan.png)
+Add new pic
+![routes](/images/routesv2.png)
 
 ##### Please check routes/users.js for the backend routes, there are only POST and GET methods since I didn't need others for now
 
