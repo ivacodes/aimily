@@ -41,7 +41,8 @@ p {
 }
 
 #welcome,
-#resultcontainer {
+#resultcontainer,
+#hellouser {
   background-color: #bb5788;
   color: white;
   box-shadow: #f1f9f5 4pt;

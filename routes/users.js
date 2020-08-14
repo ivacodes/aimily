@@ -61,7 +61,7 @@ router.get("/user", checkUserLoggedIn, async (req, res) => {
     result = await db(`select * from users where id='${req.userId}';`);
     res.send(result.data);
   } catch (err) {
-    res.send(400).send({ message: err });
+    res.status(400).send({ message: err });
   }
 });
 
@@ -72,10 +72,10 @@ router.post("/goals", checkUserLoggedIn, async (req, res) => {
     await db(
       `insert into goals (goal, deadline, description, user) values ('${goal}','${deadline}','${description}','${userId}');`
     );
-    res.send(200).send({ message: "goal inserted" });
+    res.status(200).send({ message: "goal inserted" });
   } catch (err) {
     console.log(err);
-    res.send(400).send({ message: "goal insertion failed" });
+    res.status(400).send({ message: "goal insertion failed" });
   }
 });
 
@@ -86,7 +86,7 @@ router.get("/goals/:userId", checkUserLoggedIn, async (req, res) => {
     const results = await db(`select * from goals where user='${userId}';`);
     res.send(results.data);
   } catch (err) {
-    res.send(404);
+    res.status(404);
   }
 });
 
