@@ -8,7 +8,7 @@ checkUserLoggedIn = async (req, res, next) => {
 
   if (token) {
     jwt.verify(token, supersecret, function (err, decoded) {
-      if (err) res.status(401).send({ message: err.message });
+      if (err) res.send({ message: err.message });
       else {
         const { userId } = decoded;
         req.userId = userId;

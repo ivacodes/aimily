@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 //import { NotExtended } from "http-errors"; // don't know where this came from, I think it wasn't here in the beginning
 import UserLogin from "./components/UserLogin";
+import UserGoals from "./components/UserGoals";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -9,6 +10,7 @@ export default class App extends React.Component {
     this.state = {
       userLoggedIn: 0,
       userId: "",
+      loginError: "",
       //currentStep: 1, //default step is 1 // was planning to split into components, but didn't have time so just ignore this
       name: "",
       email: "",
@@ -101,13 +103,13 @@ export default class App extends React.Component {
   isUserLoggedIn = async () => {
     //check if browser already has token
     let token = localStorage.getItem("token");
-    if (token) {
+    if (token !== undefined) {
       try {
         const result = await fetch("users/user", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "x-access-token": localStorage.getItem("token"),
+            "x-access-token": token,
           },
         });
         let json = await result.json();
@@ -116,10 +118,13 @@ export default class App extends React.Component {
           userLoggedIn: 1,
           userId: json[0].id,
           name: json[0].name,
+          loginError: "",
         });
-        console.log(json);
       } catch (err) {
-        console.log(err);
+        // this.setState({
+        //   loginError: "Incorrect login details, please log in",
+        // });
+        // console.log(this.state.loginError);
       }
     } else {
       this.setState({
@@ -134,8 +139,8 @@ export default class App extends React.Component {
     try {
       //check if user already logged in
       this.isUserLoggedIn();
-    } catch (error) {
-      console.log({ msg: error });
+    } catch (err) {
+      console.log({ msg: err });
     }
   };
 
@@ -147,14 +152,22 @@ export default class App extends React.Component {
       deadline,
       description,
       oneUserInfo,
+
+      userId,
       userLoggedIn,
+      loginError,
     } = this.state;
 
     return (
       <div className="container p-5 text-center">
         {
-          userLoggedIn ? null : (
-            <UserLogin isUserLoggedIn={this.isUserLoggedIn} />
+          userLoggedIn ? (
+            <UserGoals userId={userId} name={name} />
+          ) : (
+            <UserLogin
+              isUserLoggedIn={this.isUserLoggedIn}
+              error={loginError}
+            />
           )
           /* <div className="container rounded p-5" id="welcome">
           <h1>Welcome to Aimily!</h1>

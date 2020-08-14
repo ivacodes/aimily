@@ -7,6 +7,7 @@ export default class UserLogin extends Component {
     super(props);
     this.state = {
       selected: "",
+      userCreated: 0,
     };
   }
   onButtonPress(e) {
@@ -20,6 +21,7 @@ export default class UserLogin extends Component {
 
   render() {
     const { selected } = this.state;
+    const { error } = this.props;
     return (
       <div>
         CREATE ACCOUNT OR LOG INTO EXISTING ACCOUNT
@@ -49,6 +51,7 @@ export default class UserLogin extends Component {
                 return null;
             }
           })()}
+          {error}
         </div>
       </div>
     );

@@ -40,7 +40,8 @@ router.post("/", async (req, res, next) => {
     );
     res.status(200).send({ msg: "ok" });
   } catch (err) {
-    res.status(500).send(err);
+    // console.log("User exists");
+    res.status(500).send({ msg: "User with those credentials already exists" });
   }
 });
 
@@ -60,17 +61,15 @@ router.post("/login", async (req, res, next) => {
       );
       // if pass correct pass token to front end
       if (passCorrect) {
-        // console.log("password correct");
-        // console.log("User is ", results.data[0]);
         let token = jwt.sign({ userId: results.data[0].id }, supersecret);
         res.send({ message: "User OK", token });
       } else {
         //pass not correct
-        res.status(404).send({ message: "Wrong pass" });
+        res.status(401).send({ errMessage: "Incorrect login details" });
       }
     } else {
       //user not found
-      res.status(404).send({ message: "User not found!" });
+      res.status(401).send({ errMessage: "Incorrect login details" });
     }
   } catch (err) {
     console.log(err);

@@ -7,6 +7,7 @@ export default class Login extends Component {
     this.state = {
       name: "",
       password: "",
+      error: "",
     };
   }
 
@@ -32,29 +33,42 @@ export default class Login extends Component {
         body: JSON.stringify(user),
       });
       let json = await result.json();
-      //token received
-      console.log(json);
-      //save token in local storage
-      localStorage.setItem("token", json.token);
-      this.props.isUserLoggedIn();
+      //response with token or without
+      //if backend sent an authentication error and did not send a token back
+      if (!json.token) {
+        this.setState({
+          error: json.errMessage,
+        });
+      } else {
+        //response with token, set token in localstorage
+        this.setState({
+          error: "",
+        });
+        //save token in local storage
+        localStorage.setItem("token", json.token);
+        //after successful login, isUserLoggedIn will populate the state of the main app with user details from the DB
+        this.props.isUserLoggedIn();
+      }
     } catch (err) {
-      console.log(err);
+      console.log("error in login", err);
     }
   };
 
   render() {
-    const { name, password } = this.state;
+    const { name, password, error } = this.state;
     return (
       <div>
         Login input
         <form onSubmit={this.handleSubmit}>
           <input
+            type="text"
             name="name"
             value={name}
             required
             onChange={this.handleInputChange}
           ></input>
           <input
+            type="password"
             name="password"
             value={password}
             required
@@ -62,6 +76,7 @@ export default class Login extends Component {
           ></input>
           <button type="submit">Login</button>
         </form>
+        {error}
       </div>
     );
   }

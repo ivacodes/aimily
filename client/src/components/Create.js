@@ -13,6 +13,7 @@ export default class Create extends Component {
         confirmPassword: "",
       },
       errors: {},
+      userCreated: 0,
     };
   }
 
@@ -87,8 +88,8 @@ export default class Create extends Component {
       input["password"] = "";
       input["confirmPassword"] = "";
       this.setState({ input: input });
+      console.log("form submitted");
 
-      alert("Form submitted");
       this.storeUser(this.state.input);
     }
   };
@@ -110,15 +111,19 @@ export default class Create extends Component {
           },
           body: JSON.stringify(newUser),
         });
+
+        this.setState({
+          userCreated: 1,
+        });
       } catch (err) {
-        console.log(err);
+        console.log("user exists", err.msg); // this no worky
       }
-      console.log(err);
+      console.log("storing user", err);
     });
   };
 
   render() {
-    const { input, errors } = this.state;
+    const { input, errors, userCreated } = this.state;
     return (
       <div>
         Create user input
@@ -185,6 +190,9 @@ export default class Create extends Component {
 
           <input type="submit" value="Submit" className="btn btn-success" />
         </form>
+        {userCreated ? (
+          <div>User successfully created, please log in</div>
+        ) : null}
       </div>
     );
   }
