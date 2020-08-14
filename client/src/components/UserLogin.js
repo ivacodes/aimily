@@ -23,9 +23,7 @@ export default class UserLogin extends Component {
     const { selected } = this.state;
     const { error } = this.props;
     return (
-      <div>
-        CREATE ACCOUNT OR LOG INTO EXISTING ACCOUNT
-        <br />
+      <div id="logincreatebuttons" className="rounded p-2 mt-n1 ">
         <button
           className="btn btn-lg mb-4"
           name="selected"
@@ -35,7 +33,7 @@ export default class UserLogin extends Component {
           LOGIN
         </button>
         <button
-          className="btn btn-lg mb-4"
+          className="btn btn-lg mb-4 ml-3"
           name="selected"
           value="create"
           onClick={(e) => this.onButtonPress(e)}

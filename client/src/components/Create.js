@@ -126,7 +126,6 @@ export default class Create extends Component {
     const { input, errors, userCreated } = this.state;
     return (
       <div>
-        Create user input
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name:</label>
@@ -136,8 +135,7 @@ export default class Create extends Component {
               value={input.name}
               onChange={this.handleInputChange}
               className="form-control"
-              placeholder="Enter name"
-              id="name"
+              placeholder="Username"
             />
 
             <div className="text-danger">{errors.name}</div>
@@ -151,8 +149,7 @@ export default class Create extends Component {
               value={input.email}
               onChange={this.handleInputChange}
               className="form-control"
-              placeholder="Enter email"
-              id="email"
+              placeholder="email"
             />
 
             <div className="text-danger">{errors.email}</div>
@@ -166,8 +163,7 @@ export default class Create extends Component {
               value={input.password}
               onChange={this.handleInputChange}
               className="form-control"
-              placeholder="Enter password"
-              id="password"
+              placeholder="Password"
             />
 
             <div className="text-danger">{errors.password}</div>
@@ -181,14 +177,17 @@ export default class Create extends Component {
               value={input.confirmPassword}
               onChange={this.handleInputChange}
               className="form-control"
-              placeholder="Enter confirm password"
-              id="confirm_password"
+              placeholder="Confirm password"
             />
 
             <div className="text-danger">{errors.confirmPassword}</div>
           </div>
 
-          <input type="submit" value="Submit" className="btn btn-success" />
+          <input
+            type="submit"
+            value="Submit"
+            className="btn btn-lg mb-4 ml-3"
+          />
         </form>
         {userCreated ? (
           <div>User successfully created, please log in</div>

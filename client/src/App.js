@@ -13,6 +13,7 @@ export default class App extends React.Component {
     };
   }
 
+  //logout button pressed
   userLoggedOut = async () => {
     console.log("token deleted, next clearing state");
     this.setState({

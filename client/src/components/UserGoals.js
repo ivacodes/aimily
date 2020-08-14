@@ -107,7 +107,7 @@ export default class UserGoals extends Component {
             Logout
           </button>{" "}
         </h2>
-        <div className="container rounded p-5 mt-3" id="goalview">
+        <div className="rounded p-5 mt-3" id="goalview">
           <h2>What's your goal?</h2>
           <div className="form-inline mb-4">
             <input
@@ -144,8 +144,8 @@ export default class UserGoals extends Component {
           </button>
           {newGoalCreated ? <h2> Your new goal is created! </h2> : null}
         </div>
-        {/* visualize goals */}
-        <div className="rounded mt-5 p-5" id="resultcontainer">
+        {/* visualize goals - this can be separated in a new component */}
+        <div className="rounded mt-3 p-5" id="resultcontainer">
           {goals.map((goal) => {
             return (
               <div key={goal.id}>

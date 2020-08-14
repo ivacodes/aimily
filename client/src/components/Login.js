@@ -58,23 +58,33 @@ export default class Login extends Component {
     const { name, password, error } = this.state;
     return (
       <div>
-        Login input
-        <form onSubmit={this.handleSubmit}>
+        <form
+          onSubmit={this.handleSubmit}
+          className="form-inline p-4 rounded"
+          id="form"
+        >
           <input
             type="text"
             name="name"
             value={name}
             required
             onChange={this.handleInputChange}
+            className="form-control mr-2"
+            placeholder="Username"
           ></input>
+
           <input
             type="password"
             name="password"
             value={password}
             required
             onChange={this.handleInputChange}
+            placeholder="Password"
+            className="form-control mr-2"
           ></input>
-          <button type="submit">Login</button>
+          <button type="submit" className="btn btn-lg">
+            Log me in!
+          </button>
         </form>
         {error}
       </div>

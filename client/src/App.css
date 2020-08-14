@@ -42,7 +42,9 @@ p {
 
 #welcome,
 #resultcontainer,
-#hellouser {
+#hellouser,
+#form,
+#logincreatebuttons {
   background-color: #bb5788;
   color: white;
   box-shadow: #f1f9f5 4pt;
