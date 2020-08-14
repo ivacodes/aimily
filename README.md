@@ -12,7 +12,6 @@
 
 #### Routes
 
-Add new pic
 ![routes](/images/routes_v2.png)
 
 #### User flow
@@ -23,7 +22,9 @@ Add new pic
 
 ![user flow auth](images/user_flow_with_auth.png)
 
-#####
+#### React Component structure
+
+![component structure](images/component_structure.png)
 
 _Very excited!_
 :smile:
