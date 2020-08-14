@@ -27,6 +27,7 @@ export default class UserLogin extends Component {
         CREATE ACCOUNT OR LOG INTO EXISTING ACCOUNT
         <br />
         <button
+          className="btn btn-lg mb-4"
           name="selected"
           value="login"
           onClick={(e) => this.onButtonPress(e)}
@@ -34,6 +35,7 @@ export default class UserLogin extends Component {
           LOGIN
         </button>
         <button
+          className="btn btn-lg mb-4"
           name="selected"
           value="create"
           onClick={(e) => this.onButtonPress(e)}

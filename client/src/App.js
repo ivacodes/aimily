@@ -145,18 +145,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    const {
-      name,
-      email,
-      goal,
-      deadline,
-      description,
-      oneUserInfo,
-
-      userId,
-      userLoggedIn,
-      loginError,
-    } = this.state;
+    const { name, userId, userLoggedIn, loginError } = this.state;
 
     return (
       <div className="container p-5 text-center">
