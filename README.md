@@ -6,7 +6,10 @@
 
 #### Feature extension changes
 
-Added user login and user creation components using jwt and bcrypt libraries
+- Added user login and user creation components using jwt and bcrypt libraries
+- Modified database schema
+- Refactored api routes in users.js
+- Refactored app into components
 
 <https://docs.google.com/presentation/d/1zQW1SU4VAWtGLtWm4snRkQo04rCd5nyvwpyUXWtsU-0/edit?usp=sharing>
 

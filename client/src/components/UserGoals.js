@@ -150,9 +150,9 @@ export default class UserGoals extends Component {
           {goals.map((goal) => {
             return (
               <div key={goal.id}>
-                <div>Goal:{goal.goal}</div>
-                <div>Deadline:{goal.deadline}</div>
-                <div>Description:{goal.description}</div>
+                <div>Goal: {goal.goal}</div>
+                <div>Deadline: {goal.deadline}</div>
+                <div>Description: {goal.description}</div>
                 <br />
               </div>
             );
