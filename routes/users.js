@@ -4,13 +4,14 @@ const bodyParser = require("body-parser");
 const db = require("../model/helper");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const supersecret = process.env.SUPER_SECRET;
+const supersecret = process.env.SUPERSECRET;
 const checkUserLoggedIn = require("./guards/checkUserLoggedIn");
+const checkUserExists = require("./guards/checkUserExists");
 
 router.use(bodyParser.json());
 
 // ++ POST create new user and add it to the users table. Passwords are encrypted
-router.post("/", async (req, res, next) => {
+router.post("/", checkUserExists, async (req, res, next) => {
   const { name, email, password } = req.body;
   try {
     await db(
@@ -18,8 +19,7 @@ router.post("/", async (req, res, next) => {
     );
     res.status(200).send({ msg: "ok" });
   } catch (err) {
-    // console.log("User exists");
-    res.status(500).send({ msg: "User with those credentials already exists" });
+    res.status(500).send({ msg: err });
   }
 });
 

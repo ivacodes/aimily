@@ -14,6 +14,7 @@ export default class Create extends Component {
       },
       errors: {},
       userCreated: 0,
+      userCreationError: 0,
     };
   }
 
@@ -106,26 +107,32 @@ export default class Create extends Component {
         password: hash,
       };
       try {
-        await fetch("/users", {
+        const response = await fetch("/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(newUser),
         });
-
-        this.setState({
-          userCreated: 1,
-        });
+        const json = await response.json();
+        console.log(json);
+        if (json.msg === "ok") {
+          this.setState({
+            userCreated: 1,
+            userCreationError: 0,
+          });
+        } else {
+          this.setState({ userCreationError: 1, userCreated: 0 });
+        }
       } catch (err) {
-        console.log("user exists", err.msg);
+        console.log("user exists", err);
       }
       console.log("storing user", err);
     });
   };
 
   render() {
-    const { input, errors, userCreated } = this.state;
+    const { input, errors, userCreated, userCreationError } = this.state;
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -193,6 +200,9 @@ export default class Create extends Component {
         </form>
         {userCreated ? (
           <div>User successfully created, please log in</div>
+        ) : null}
+        {userCreationError ? (
+          <div>User with the same name or email address already exists</div>
         ) : null}
       </div>
     );

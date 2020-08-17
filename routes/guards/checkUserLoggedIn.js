@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const supersecret = process.env.SUPER_SECRET;
+const supersecret = process.env.SUPERSECRET;
 
 //use this guard for every protected call
 checkUserLoggedIn = async (req, res, next) => {

@@ -86,6 +86,7 @@ export default class UserGoals extends Component {
       newGoalCreated: 1,
     });
   }
+
   logout(e) {
     e.preventDefault();
     localStorage.removeItem("token");
