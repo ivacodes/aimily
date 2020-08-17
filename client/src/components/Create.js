@@ -44,12 +44,10 @@ export default class Create extends Component {
     }
 
     if (typeof input["email"] !== "undefined") {
-      var pattern = new RegExp(
-        /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-      );
+      var pattern = new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/);
       if (!pattern.test(input["email"])) {
         isValid = false;
-        errors["email"] = "Please enter valid email address.";
+        errors["email"] = "Please enter a valid email address.";
       }
     }
 
@@ -60,7 +58,7 @@ export default class Create extends Component {
 
     if (!input["confirmPassword"]) {
       isValid = false;
-      errors["confirmPassword"] = "Please enter your confirm password.";
+      errors["confirmPassword"] = "Please reenter your password.";
     }
 
     if (
@@ -99,7 +97,6 @@ export default class Create extends Component {
     const { name, email, password } = input;
     // console.log(input.password);
     //encrypt password
-    //this method doesn't check if username or email are already checked, that should be added
     bcrypt.hash(password, saltRounds, async (err, hash) => {
       let newUser = {
         name: name,
@@ -147,7 +144,7 @@ export default class Create extends Component {
               placeholder="Username"
             />
 
-            <div className="text-danger">{errors.name}</div>
+            <div className="text-warning">{errors.name}</div>
           </div>
 
           <div className="form-group">
@@ -161,7 +158,7 @@ export default class Create extends Component {
               placeholder="email"
             />
 
-            <div className="text-danger">{errors.email}</div>
+            <div className="text-warning">{errors.email}</div>
           </div>
 
           <div className="form-group">
@@ -175,7 +172,7 @@ export default class Create extends Component {
               placeholder="Password"
             />
 
-            <div className="text-danger">{errors.password}</div>
+            <div className="text-warning">{errors.password}</div>
           </div>
 
           <div className="form-group">
@@ -189,7 +186,7 @@ export default class Create extends Component {
               placeholder="Confirm password"
             />
 
-            <div className="text-danger">{errors.confirmPassword}</div>
+            <div className="text-warning">{errors.confirmPassword}</div>
           </div>
 
           <input

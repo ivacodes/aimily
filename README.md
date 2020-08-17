@@ -4,6 +4,10 @@
 
 ### An app for setting goals and making sure you achieve them
 
+#### Feature extension changes
+
+<https://docs.google.com/presentation/d/1zQW1SU4VAWtGLtWm4snRkQo04rCd5nyvwpyUXWtsU-0/edit?usp=sharing>
+
 #### Database schema
 
 ![database schema](images/database_schema_v2.png)
