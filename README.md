@@ -6,6 +6,8 @@
 
 #### Feature extension changes
 
+Added user login and user creation components using jwt and bcrypt libraries
+
 <https://docs.google.com/presentation/d/1zQW1SU4VAWtGLtWm4snRkQo04rCd5nyvwpyUXWtsU-0/edit?usp=sharing>
 
 #### Database schema
@@ -17,10 +19,6 @@
 #### Routes
 
 ![routes](/images/routes_v2.png)
-
-#### User flow
-
-![user flow](images/user_flow.jpg)
 
 #### Authentication user flow
 
