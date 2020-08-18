@@ -43,10 +43,7 @@ export default class App extends React.Component {
           loginError: "",
         });
       } catch (err) {
-        // this.setState({
-        //   loginError: "Incorrect login details, please log in",
-        // });
-        // console.log(this.state.loginError);
+        console.log(err);
       }
     } else {
       this.setState({

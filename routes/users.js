@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const db = require("../model/helper");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const supersecret = process.env.SUPERSECRET;
+const secretword = process.env.SECRETWORD;
 const checkUserLoggedIn = require("./guards/checkUserLoggedIn");
 const checkUserExists = require("./guards/checkUserExists");
 
@@ -39,7 +39,7 @@ router.post("/login", async (req, res, next) => {
       );
       // if pass correct pass token to front end
       if (passCorrect) {
-        let token = jwt.sign({ userId: results.data[0].id }, supersecret);
+        let token = jwt.sign({ userId: results.data[0].id }, secretword);
         res.send({ message: "User OK", token });
       } else {
         //pass not correct
